@@ -1,27 +1,54 @@
+import os
+import asyncio
+import tempfile
 from fastapi import FastAPI, Form
 from fastapi.responses import FileResponse, HTMLResponse
 import yt_dlp
-import os
-import uuid
 
 app = FastAPI()
 
+# HTML form for user input
 @app.get("/", response_class=HTMLResponse)
-def home():
+async def home():
     return """
-    <form action="/download" method="post">
-        <input type="text" name="url" placeholder="Enter video URL">
-        <button type="submit">Download</button>
-    </form>
+    <html>
+      <body>
+        <h2>Download YouTube/Instagram Video</h2>
+        <form action="/download" method="post">
+          <input type="text" name="url" placeholder="Enter video URL" required>
+          <button type="submit">Download</button>
+        </form>
+      </body>
+    </html>
     """
 
 @app.post("/download")
-def download(url: str = Form(...)):
-    video_id = str(uuid.uuid4())
-    filename = f"{video_id}.mp4"
-    ydl_opts = {"outtmpl": filename, "format": "mp4"}
+async def download_video(url: str = Form(...)):
+    # Create a temporary file path
+    temp_dir = tempfile.gettempdir()
+    file_path = os.path.join(temp_dir, "%(title)s.%(ext)s")
+
+    ydl_opts = {
+        'outtmpl': file_path,
+        'format': 'mp4/bestaudio/best',
+        'quiet': True,
+    }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+        info = ydl.extract_info(url, download=True)
+        downloaded_file = ydl.prepare_filename(info)
 
-    return FileResponse(filename, filename=filename, media_type="video/mp4")
+    # Schedule file deletion after 10 seconds
+    asyncio.create_task(delete_after(downloaded_file, 10))
+
+    return FileResponse(
+        downloaded_file,
+        filename=os.path.basename(downloaded_file),
+        media_type="video/mp4"
+    )
+
+async def delete_after(path: str, delay: int):
+    await asyncio.sleep(delay)
+    if os.path.exists(path):
+        os.remove(path)
+        print(f"Deleted {path}")
