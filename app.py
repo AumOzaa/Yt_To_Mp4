@@ -10,17 +10,8 @@ app = FastAPI()
 # HTML form for user input
 @app.get("/", response_class=HTMLResponse)
 async def home():
-    return """
-    <html>
-      <body>
-        <h2>Download YouTube/Instagram Video</h2>
-        <form action="/download" method="post">
-          <input type="text" name="url" placeholder="Enter video URL" required>
-          <button type="submit">Download</button>
-        </form>
-      </body>
-    </html>
-    """
+    with open("templates/index.html", "r", encoding="utf-8") as f:
+        return HTMLResponse(content=f.read())
 
 @app.post("/download")
 async def download_video(url: str = Form(...)):

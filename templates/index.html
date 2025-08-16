@@ -1,49 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>YouTube Downloader</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background: #f5f5f5;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            display: inline-block;
-        }
-        input[type="text"] {
-            width: 300px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-        button {
-            padding: 10px 20px;
-            margin-left: 10px;
-            border: none;
-            border-radius: 8px;
-            background: #ff0000;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background: #cc0000;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Downloader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: #333;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #222;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+    form {
+      margin: 20px auto;
+      max-width: 500px;
+    }
+    input[type="text"] {
+      width: 70%;
+      padding: 12px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 12px 25px;
+      font-size: 1rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #444;
+    }
+    .heart {
+      color: red;
+      font-size: 1.5rem;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>YouTube Downloader</h1>
-        <form action="/download" method="post">
-            <input type="text" name="url" placeholder="Enter YouTube URL" required>
-            <button type="submit">Download</button>
-        </form>
-    </div>
+  <h1>Video Downloader</h1>
+  <p>Paste a YouTube or Instagram URL below to download your video.</p>
+  <form action="/download" method="post">
+    <input type="text" name="url" placeholder="Enter video URL..." required>
+    <button type="submit">Download</button>
+  </form>
+  
+  <footer>
+    Love you mummy <span class="heart">❤️</span>
+  </footer>
 </body>
 </html>
